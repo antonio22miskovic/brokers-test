@@ -4,8 +4,13 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
-        }
+            "App\\": "app/",
+            "App\\Helpers\\": "Helpers/"
+        },
+        "files": [
+            "app/Helpers/IndexHelper.php"
+        ]
     }
+    
 
 }

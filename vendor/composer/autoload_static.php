@@ -8,16 +8,22 @@ class ComposerStaticInitd61a0cb6fcf6ab3ffe7746c206409094
 {
     public static $files = array (
         '4cdafd4a5191caf078235e7dd119fdaf' => __DIR__ . '/..' . '/flightphp/core/flight/autoload.php',
+        '039f2f205114ef57c8618bb80289fa3a' => __DIR__ . '/../..' . '/app/Helpers/IndexHelper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'A' => 
         array (
+            'App\\Helpers\\' => 12,
             'App\\' => 4,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'App\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Helpers',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
