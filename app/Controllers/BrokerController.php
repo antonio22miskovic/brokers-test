@@ -11,21 +11,12 @@ class BrokerController {
     public function index () { 
         
         // llamamos al modelo con los datos
-        $data = ModelBrokers::getAll();
+        $data = ModelBrokers::getReferer(1);
         
         // llamamos el shortcode de la tabla de brokers
         $shortcodeTable = BrokerTable::render($data);
 
-        // // Llamamos el shorcode de el arbol
-        $treeData = array_map(function ($row) {
-            return [
-                'key'    => $row['User ID'],
-                'name'   => $row['User Name'],
-                'parent' => $row['Referer']
-            ];
-        }, $data);
-        // return "hola";
-        $shortcodeTree = BrokerTree::render(['treeData' => $treeData ]);
+        $shortcodeTree = BrokerTree::render($data);
 
         $html = '
             <div>' . $shortcodeTable . '</div> 

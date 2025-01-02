@@ -7,27 +7,29 @@ use Flight;
 class Broker
 {   
     // Método para obtener los datos de la consulta
-    public static function getAll()
+    public static function getReferer($refererId)
     {
         // Consulta SQL
+       
         $query = "
             SELECT 
-                u.id AS 'User ID', 
-                u.name AS 'User Name', 
-                u.email AS 'User Email', 
-                u.role AS 'Role',
-                u.registration_date AS 'Registration Date',
-                IFNULL(r.name, 'No Referer') AS 'Referer',
-                t.purchase_volume AS 'Purchase Volume',
-                t.client_volume AS 'Client Volume',
-                t.broker_volume AS 'Broker Volume',
-                bp.client_volume AS 'Broker Client Volume',
-                bp.broker_volume AS 'Broker Broker Volume',
-                bp.total_volume AS 'Broker Total Volume'
+                u.id AS 'id', 
+                u.name AS 'name', 
+                u.email AS 'email', 
+                u.role AS 'role',
+                u.registration_date AS 'created_at',
+                IFNULL(r.name, 'No Referer') AS 'referer',
+                t.purchase_volume AS 'purchase_volume',
+                t.client_volume AS 'client_volume',
+                t.broker_volume AS 'broker_volume',
+                bp.client_volume AS 'broker_client_volume',
+                bp.broker_volume AS 'broker_volume',
+                bp.total_volume AS 'broker_total_volume'
             FROM users u
             LEFT JOIN users r ON u.referer_id = r.id
             LEFT JOIN transactions t ON u.id = t.user_id
-            LEFT JOIN broker_performance bp ON u.id = bp.broker_id
+            LEFT JOIN broker_performance bp ON u.id = bp.user_id
+            WHERE u.referer_id = $refererId 
             ORDER BY u.registration_date DESC
         ";
 
@@ -35,10 +37,14 @@ class Broker
         $stmt = Flight::db()->runQuery($query);
 
         // Obtener los resultados
-        $results = $stmt->fetchAll();
+        $referidosDirectos = $stmt->fetchAll();
 
+        foreach ($referidosDirectos as &$referido) {
+            $referido['referidos'] = self::getReferer($referido['id']);
+        }
+    
         // Devolver los resultados
-        return $results;
+        return $referidosDirectos;
     }
 
 }
